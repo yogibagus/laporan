@@ -56,12 +56,17 @@
 			</div>
 			<button type="submit" class="btn btn-primary btn-sm mb-3 float-right">Search</button>
 		</form>
-		<table class="table">
-			<thead>
+		<table class="table table-striped" style="font-size: 14px;">
+			<thead class="">
 				<tr>
-					<th>Tanggal</th>
-					<th>No Referensi</th>
-					<th>Keterangan</th>
+					<th rowspan="2" class="align-middle">Tanggal</th>
+					<th rowspan="2" class="align-middle">No Referensi</th>
+					<th rowspan="2" class="align-middle">Keterangan</th>
+					<th rowspan="2" class="align-middle">Petugas</th>
+					<th colspan="3" class="text-center">Masuk</th>
+					<th colspan="3" class="text-center">Keluar</th>
+					<th colspan="3" class="text-center">Saldo</th>
+				<tr>
 					<th>Jumlah</th>
 					<th>Harga</th>
 					<th>Saldo</th>
@@ -72,23 +77,24 @@
 					<th>Harga</th>
 					<th>Saldo</th>
 				</tr>
+
+				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+				<?php if ($laporan != null) { ?>
+					<tr>
+						<td><?= $laporan[0]->tanggal ?></td>
+						<td colspan="3" class="text-center">Saldo Awal</td>
 						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><?= $jumlah ?></td>
+						<td></td>
+						<td><?= $jumlah . " " . $laporan[0]->item_satuan ?></td>
 						<td>Rp <?= number_format($harga, 0, ',', '.') ?></td>
 						<td>Rp <?= number_format($saldo, 0, ',', '.') ?></td>
 					</tr>
-					<?php if ($laporan != null) { ?>
 					<?php foreach ($laporan as $key => $value) {
 						$saldo_masuk = $value->jumlah_masuk * $value->harga_masuk;
 						$saldo_keluar = $value->jumlah_keluar * $value->harga_keluar;
@@ -96,24 +102,47 @@
 						if ($value->jumlah_masuk != null) {
 							$jumlah = $jumlah + $value->jumlah_masuk;
 							$saldo = $jumlah * $value->hpp;
+							$bg_masuk = "table-success";
+						} else {
+							$bg_masuk = "";
 						}
 
 						if ($value->jumlah_keluar != null) {
 							$jumlah = $jumlah - $value->jumlah_keluar;
 							$saldo = $jumlah * $value->hpp;
+							$bg_keluar = "table-danger";
+						} else {
+							$bg_keluar = "";
 						}
+
 					?>
 						<tr>
 							<td><?= $value->tanggal ?></td>
 							<td><?= $value->kode ?></td>
 							<td><?= $value->catatan ?></td>
-							<td><?= ($value->jumlah_masuk != null) ? $value->jumlah_masuk : "-" ?></td>
-							<td>Rp <?= ($value->harga_masuk != null) ? number_format($value->harga_masuk, 0, ',', '.') : "-" ?></td>
-							<td>Rp <?= number_format($saldo_masuk, 0, ',', '.')  ?></td>
-							<td><?= ($value->jumlah_keluar != null) ? $value->jumlah_keluar : "-"  ?></td>
-							<td>Rp <?= ($value->harga_keluar != null) ? number_format($value->harga_keluar, 0, ',', '.') : "-"  ?></td>
-							<td>Rp <?= number_format($saldo_keluar, 0, ',', '.') ?></td>
-							<td><?= $jumlah ?></td>
+							<td><?= $value->petugas ?></td>
+
+							<td class="<?= $bg_masuk  ?>">
+								<?= ($value->jumlah_masuk != null) ? $value->jumlah_masuk . " " . $value->item_satuan : "-" ?>
+							</td>
+							<td class="<?= $bg_masuk  ?>">
+								Rp <?= ($value->harga_masuk != null) ? number_format($value->harga_masuk, 0, ',', '.') : "-" ?>
+							</td>
+							<td class="<?= $bg_masuk  ?>">
+								Rp <?= number_format($saldo_masuk, 0, ',', '.')  ?>
+							</td>
+
+							<td class="<?= $bg_keluar  ?>">
+								<?= ($value->jumlah_keluar != null) ? $value->jumlah_keluar . " " . $value->item_satuan : "-"  ?>
+							</td>
+							<td class="<?= $bg_keluar  ?>">
+								Rp <?= ($value->harga_keluar != null) ? number_format($value->harga_keluar, 0, ',', '.') : "-"  ?>
+							</td class="<?= $bg_keluar  ?>">
+							<td class="<?= $bg_keluar ?>">
+								Rp <?= number_format($saldo_keluar, 0, ',', '.') ?>
+							</td>
+
+							<td><?= $jumlah . " " . $value->item_satuan ?></td>
 							<td>Rp <?= number_format($value->hpp, 0, ',', '.') ?></td>
 							<td>Rp <?= number_format($saldo, 0, ',', '.') ?></td>
 						</tr>
@@ -135,7 +164,7 @@
 		});
 
 
-		$("[name='cabang']").on('change', function() {
+		$("[name='cabang']").on('click', function() {
 			$.ajax({
 				type: "method",
 				url: "<?= site_url('/welcome/get_gudang/') ?>" + this.value,

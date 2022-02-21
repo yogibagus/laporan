@@ -19,45 +19,19 @@ class Welcome extends CI_Controller {
 			$gudang = $this->input->get('gudang');
 			$item = $this->input->get('item');
 			$date = (explode(" - ", $daterange));
-			echo $date[0] . "-" . $date[1];
+			echo $date[0] . "-" . $date[1] . " | ";
 
 			$result = $this->M_laporan->get_first_total($date[0],$gudang, $item);
 
-			$jumlah = $result->jumlah_masuk - $result->jumlah_keluar;	
-			$saldo = $result->hpp* $jumlah;
+			$jumlah = $result->total_jumlah_masuk - $result->total_jumlah_keluar;	
+			$saldo = $result->hpp * $jumlah;
 				$data = [
 					'jumlah' => $jumlah,
 					'harga' => $result->hpp,
 					'saldo' => $saldo
 				];
-			// if($result != false) {
-			// 	$jumlah = 0;
-			// 	foreach ($result as $key => $value) {
-			// 		if ($value->jumlah_masuk != null) {
-			// 			$jumlah = $jumlah + $value->jumlah_masuk;
-			// 			$saldo = $jumlah * $value->hpp;
-			// 		}
 
-			// 		if ($value->jumlah_keluar != null) {
-			// 			$jumlah = $jumlah - $value->jumlah_keluar;
-			// 			$saldo = $jumlah * $value->hpp;
-			// 		}
-			// 	}
-
-			// 	$harga = $result[0]->hpp;
-
-			// 	$data = [
-			// 		'jumlah' => $jumlah,
-			// 		'harga' => $harga,
-			// 		'saldo' => $saldo
-			// 	];
-			// }else{
-			// 	$data = [
-			// 		'jumlah' => 0,
-			// 		'harga' => 0,
-			// 		'saldo' => 0
-			// 	];
-			// }
+			
 
 			
 			$stock = $this->M_laporan->get_kartu_stok($date[0], $date[1], $gudang, $item);
@@ -67,7 +41,7 @@ class Welcome extends CI_Controller {
 				$data['laporan'] = null;
 			}
 
-			echo $gudang . "-" . $item;
+		 echo $gudang . "-" . $item;
 		}
 
 		$data['gudang'] = $this->M_laporan->get_gudang();
