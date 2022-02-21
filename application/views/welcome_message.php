@@ -28,7 +28,7 @@
 					<?php if (isset($_GET['daterange'])) { ?>
 						<input class="form-control mb-3" type="text" name="daterange" value="<?= $_GET['daterange'] ?>" required />
 					<?php } else { ?>
-						<input class="form-control mb-3" type="text" name="daterange" value="2019-01-01 - 2019-01-31" required />
+						<input class="form-control mb-3" type="text" name="daterange" value="2019-07-01 - 2019-07-31" required />
 					<?php } ?>
 				</div>
 				<div class="col-6">
@@ -53,7 +53,7 @@
 					</select>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary btn-sm mb-3 float-right">Search</button>
+			<button type="submit" class="btn btn-primary btn-sm mb-3 float-end">Search</button>
 		</form>
 		<table class="table table-striped" style="font-size: 14px;">
 			<thead class="">

@@ -21,7 +21,6 @@ class M_laporan extends CI_Model
             LEFT JOIN m_item_satuan as e ON b.m_item_satuan_id = e.id
             WHERE
             a.tanggal between '$first' and '$end'
-
             AND b.id = $item AND c.id = $gudang
         ");
             if ($query->num_rows() > 0) {
