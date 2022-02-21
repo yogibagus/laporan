@@ -83,7 +83,7 @@
 			<tbody>
 				<?php if ($laporan != null) { ?>
 					<tr>
-						<td><?= $laporan[0]->tanggal ?></td>
+						<td><?= date("d M Y" , strtotime($laporan[0]->tanggal)) ?></td>
 						<td colspan="3" class="text-center">Saldo Awal</td>
 						<td></td>
 						<td></td>
@@ -117,7 +117,7 @@
 
 					?>
 						<tr>
-							<td><?= $value->tanggal ?></td>
+							<td><?= date("d M Y" , strtotime($value->tanggal)) ?></td>
 							<td><?= $value->kode ?></td>
 							<td><?= $value->catatan ?></td>
 							<td><?= $value->petugas ?></td>
