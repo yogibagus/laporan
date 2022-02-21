@@ -32,8 +32,7 @@
 					<?php } ?>
 				</div>
 				<div class="col-6">
-					<select class="form-control mb-3" name="cabang" id="">
-
+					<select class="form-control mb-3" name="cabang" id="" required>
 						<option>- Cabang -</option>
 						<?php foreach ($cabang as $row) { ?>
 							<option <?= (isset($_GET['cabang'])) ? ($_GET['cabang'] == $row->id) ? "selected" : "" : ""  ?> value="<?= $row->id ?>"><?= $row->nama ?></option>
@@ -41,10 +40,10 @@
 					</select>
 				</div>
 				<div class="col-6">
-					<select class="form-control mb-3" name="item" id="">
+					<select class="form-control mb-3" name="item" id="" required>
 						<option value="">- Item -</option>
 						<?php foreach ($item as $row) { ?>
-							<option <?= (isset($_GET['item'])) ? ($_GET['item'] == $row->nama) ? "selected" : "" : ""  ?> value="<?= $row->nama ?>"><?= $row->nama ?></option>
+							<option <?= (isset($_GET['item'])) ? ($_GET['item'] == $row->id) ? "selected" : "" : ""  ?> value="<?= $row->id ?>"><?= $row->nama ?></option>
 						<?php } ?>
 					</select>
 				</div>
@@ -83,7 +82,7 @@
 			<tbody>
 				<?php if ($laporan != null) { ?>
 					<tr>
-						<td><?= date("d M Y" , strtotime($laporan[0]->tanggal)) ?></td>
+						<td><?= date("d M Y", strtotime($laporan[0]->tanggal)) ?></td>
 						<td colspan="3" class="text-center">Saldo Awal</td>
 						<td></td>
 						<td></td>
@@ -117,7 +116,7 @@
 
 					?>
 						<tr>
-							<td><?= date("d M Y" , strtotime($value->tanggal)) ?></td>
+							<td><?= date("d M Y", strtotime($value->tanggal)) ?></td>
 							<td><?= $value->kode ?></td>
 							<td><?= $value->catatan ?></td>
 							<td><?= $value->petugas ?></td>
@@ -163,6 +162,26 @@
 			});
 		});
 
+		<?php if (isset($_GET['cabang'])) { ?>
+			var id_cabang = <?= isset($_GET['cabang']) ?>;
+			$.ajax({
+				type: "method",
+				url: "<?= site_url('/welcome/get_gudang/') ?>" + id_cabang,
+				data: "data",
+				dataType: "json",
+				success: function(response) {
+					console.log(response);
+					$(".item-gudang").html("");
+					$.each(response, function(k, v) {
+						/// do stuff
+						console.log(v.nama_cabang);
+						$(".item-gudang").append(new Option(v.nama_cabang, v.id));
+					});
+				}
+			});
+		<?php } ?>
+
+
 
 		$("[name='cabang']").on('click', function() {
 			$.ajax({
@@ -176,7 +195,7 @@
 					$.each(response, function(k, v) {
 						/// do stuff
 						console.log(v.nama_cabang);
-						$(".item-gudang").append(new Option(v.nama_cabang, v.nama_cabang));
+						$(".item-gudang").append(new Option(v.nama_cabang, v.id));
 					});
 				}
 			});

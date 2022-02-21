@@ -22,7 +22,7 @@ class M_laporan extends CI_Model
             WHERE
             a.tanggal between '$first' and '$end'
 
-            AND b.nama LIKE '%$item%' AND c.nama LIKE '%$gudang%';
+            AND b.id = $item AND c.id = $gudang
         ");
             if ($query->num_rows() > 0) {
                 return $query->result();
@@ -40,12 +40,10 @@ class M_laporan extends CI_Model
         	SELECT 
            	a.tanggal, a.catatan, a.harga_keluar, a.harga_masuk, a.jumlah_keluar, a.jumlah_masuk, a.kode, a.hpp, SUM(a.jumlah_masuk) as total_jumlah_masuk, SUM(a.jumlah_keluar) as total_jumlah_keluar, b.nama, c.nama 
             FROM inv_kartu_stok as a
-            LEFT JOIN m_item as b
-            ON a.m_item_id = b.id
-            LEFT JOIN m_gudang as c
-            ON a.m_gudang_id = c.id
+            LEFT JOIN m_item as b ON a.m_item_id = b.id
+            LEFT JOIN m_gudang as c ON a.m_gudang_id = c.id
             WHERE a.tanggal < '$date'
-            AND b.nama LIKE '%$item%' AND c.nama LIKE '%$gudang%';
+            AND b.id = $item AND c.id = $gudang
         ");
         if ($query->num_rows() > 0) {
             return $query->row();
