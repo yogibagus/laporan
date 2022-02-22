@@ -37,7 +37,7 @@ class M_laporan extends CI_Model
         }
         $query = $this->db->query("
         	SELECT 
-           	a.tanggal, a.catatan, a.harga_keluar, a.harga_masuk, a.jumlah_keluar, a.jumlah_masuk, a.kode, a.hpp, SUM(a.jumlah_masuk) as total_jumlah_masuk, SUM(a.jumlah_keluar) as total_jumlah_keluar, b.nama, c.nama 
+           	a.tanggal, a.catatan, a.harga_keluar, a.harga_masuk, a.jumlah_keluar, a.jumlah_masuk, a.kode, a.hpp, SUM(a.jumlah_masuk) as total_jumlah_masuk, SUM(a.jumlah_keluar) as total_jumlah_keluar, b.nama as nama_item, c.nama 
             FROM inv_kartu_stok as a
             LEFT JOIN m_item as b ON a.m_item_id = b.id
             LEFT JOIN m_gudang as c ON a.m_gudang_id = c.id
